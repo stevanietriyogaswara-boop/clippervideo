@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClippingIn - AI Video Auto-Clipper</title>
+    
+    <!-- Tailwind CSS untuk Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#0f172a',
+                        darker: '#020617',
+                        primary: '#8b5cf6', // Violet
+                        secondary: '#ec4899', // Pink
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glow-effect:hover {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .subtitle-text {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-sans">
+
+    <!-- Navigation -->
+    <header class="border-b border-slate-800 bg-dark/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer">
+                <!-- Logo Clapperboard -->
+                <i data-lucide="clapperboard" class="text-primary w-8 h-8"></i>
+                <span class="text-2xl font-bold tracking-tight">Clipping<span class="text-primary">In</span></span>
+            </div>
+            <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-300">
+                <a href="#" class="hover:text-white transition">Fitur</a>
+                <a href="#" class="hover:text-white transition">Cara Kerja</a>
+                <a href="#" class="hover:text-white transition">Harga</a>
+            </nav>
+            <div>
+                <button class="text-sm font-semibold bg-white text-darker px-4 py-2 rounded-full hover:bg-slate-200 transition">Login</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4 w-full max-w-7xl mx-auto relative">
+        
+        <!-- Background Effects -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-[100px] -z-10"></div>
+        <div class="absolute bottom-20 right-10 w-72 h-72 bg-secondary/20 rounded-full blur-[100px] -z-10"></div>
+
+        <!-- STAGE 1: Input Section -->
+        <section id="input-stage" class="w-full max-w-3xl text-center py-12 flex flex-col items-center transition-all duration-500">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                Ubah Video Panjang Jadi <br>
+                <span class="gradient-text">Viral Shorts & Reels</span>
+            </h1>
+            <p class="text-slate-400 text-lg mb-10 max-w-2xl">
+                AI kami menganalisis video Anda, memotong momen terbaik secara otomatis, dan menambahkan subtitle dinamis dalam hitungan detik. Siap diunggah ke TikTok, IG Reels, atau YouTube Shorts.
+            </p>
+
+            <div class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-2 flex flex-col sm:flex-row items-center gap-2 shadow-2xl">
+                <div class="flex-grow flex items-center px-4 w-full">
+                    <i data-lucide="youtube" class="text-slate-400 mr-3"></i>
+                    <input type="text" id="video-url" placeholder="Tempel link YouTube, Google Drive, atau Twitch..." 
+                           class="w-full bg-transparent border-none text-white focus:ring-0 placeholder-slate-500 outline-none py-3">
+                </div>
+                <button id="process-btn" class="w-full sm:w-auto bg-gradient-to-r from-primary to-secondary text-white font-bold py-3 px-8 rounded-xl hover:opacity-90 transition glow-effect flex items-center justify-center gap-2 whitespace-nowrap">
+                    <i data-lucide="wand-2" class="w-5 h-5"></i>
+                    Buat Klip Ajaib
+                </button>
+            </div>
+
+            <div class="mt-8 flex items-center justify-center gap-4 text-sm text-slate-500">
+                <span class="flex items-center gap-1"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-500"></i> Auto-Subtitle</span>
+                <span class="flex items-center gap-1"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-500"></i> Face Tracking</span>
+                <span class="flex items-center gap-1"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-500"></i> Viral Scoring</span>
+            </div>
+        </section>
+
+        <!-- STAGE 2: Processing Section (Hidden initially) -->
+        <section id="processing-stage" class="hidden w-full max-w-2xl text-center py-20 flex flex-col items-center transition-all duration-500">
+            <div class="relative w-32 h-32 flex items-center justify-center mb-8">
+                <!-- Outer spinning rings -->
+                <div class="absolute inset-0 border-4 border-t-primary border-r-transparent border-b-secondary border-l-transparent rounded-full animate-spin"></div>
+                <div class="absolute inset-2 border-4 border-t-transparent border-r-secondary border-b-transparent border-l-primary rounded-full animate-[spin_1.5s_reverse_infinite]"></div>
+                <!-- Clapperboard inside -->
+                <i data-lucide="bot" class="w-12 h-12 text-white animate-pulse-fast"></i>
+            </div>
+            
+            <h2 id="ai-status-title" class="text-2xl font-bold mb-2">Mengunduh Video...</h2>
+            <p id="ai-status-desc" class="text-slate-400 mb-8">Sistem sedang menyiapkan file untuk dianalisis.</p>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-800 rounded-full h-3 mb-2 overflow-hidden">
+                <div id="progress-bar" class="bg-gradient-to-r from-primary to-secondary h-3 rounded-full" style="width: 0%; transition: width 0.3s ease;"></div>
+            </div>
+            <div class="flex justify-between w-full text-xs text-slate-500 font-medium">
+                <span>0%</span>
+                <span id="progress-text">0%</span>
+            </div>
+            
+            <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 w-full text-left">
+                <div id="step-1" class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 opacity-50 transition-opacity">
+                    <i data-lucide="audio-lines" class="text-primary mb-2"></i>
+                    <h3 class="font-semibold text-sm">Transkripsi Audio</h3>
+                </div>
+                <div id="step-2" class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 opacity-50 transition-opacity">
+                    <i data-lucide="brain-circuit" class="text-secondary mb-2"></i>
+                    <h3 class="font-semibold text-sm">Menganalisis Konteks</h3>
+                </div>
+                <div id="step-3" class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 opacity-50 transition-opacity">
+                    <i data-lucide="scissors" class="text-primary mb-2"></i>
+                    <h3 class="font-semibold text-sm">Memotong & Formatting</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- STAGE 3: Results Section (Hidden initially) -->
+        <section id="results-stage" class="hidden w-full max-w-6xl py-12 transition-all duration-500">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-slate-800 pb-6">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2 flex items-center gap-3">
+                        <i data-lucide="sparkles" class="text-yellow-400"></i> 
+                        Klip Anda Sudah Siap!
+                    </h2>
+                    <p class="text-slate-400">AI kami menemukan 3 momen paling berpotensi viral dari video Anda.</p>
+                </div>
+                <button onclick="resetApp()" class="mt-4 md:mt-0 text-sm bg-slate-800 hover:bg-slate-700 text-white py-2 px-4 rounded-lg transition flex items-center gap-2">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Buat Proyek Baru
+                </button>
+            </div>
+
+            <!-- Clips Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Clip Card 1 -->
+                <div class="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden hover:border-primary transition group">
+                    <!-- Video Mockup (9:16 Aspect Ratio) -->
+                    <div class="relative w-full aspect-[9/16] bg-slate-800 flex items-center justify-center overflow-hidden">
+                        <!-- Mock Video Background (using gradient/image placeholder) -->
+                        <img src="https://images.unsplash.com/photo-1516280440503-6c9fa5c4a3ee?auto=format&fit=crop&w=400&q=80" alt="Video Thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-darker/50"></div>
+                        
+                        <!-- Play Button Overlay -->
+                        <div class="absolute z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/40 transition">
+                            <i data-lucide="play" class="text-white ml-1"></i>
+                        </div>
+                        
+                        <!-- Mock Dynamic Subtitles -->
+                        <div class="absolute bottom-16 w-full px-6 text-center z-10">
+                            <p class="text-white font-extrabold text-xl uppercase tracking-wide subtitle-text">
+                                <span class="text-yellow-400">RAHASIA</span> SUKSES<br>
+                                DI USIA MUDA! 🔥
+                            </p>
+                        </div>
+
+                        <!-- Top Badges -->
+                        <div class="absolute top-4 left-4 right-4 flex justify-between z-10">
+                            <span class="bg-green-500/20 text-green-400 border border-green-500/50 text-xs font-bold px-2 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i> Viral Score: 99
+                            </span>
+                            <span class="bg-black/50 text-white text-xs font-medium px-2 py-1 rounded-md backdrop-blur-md">
+                                00:24
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card Details -->
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg mb-1 truncate">Rahasia Sukses di Usia Muda</h3>
+                        <p class="text-xs text-slate-400 mb-4 line-clamp-2">AI mendeteksi energi tinggi dan topik self-improvement yang sangat populer di TikTok.</p>
+                        
+                        <div class="flex gap-2">
+                            <button class="flex-1 bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-slate-200 transition flex items-center justify-center gap-2 text-sm">
+                                <i data-lucide="download" class="w-4 h-4"></i> Unduh
+                            </button>
+                            <button class="p-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition" title="Edit Subtitle">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clip Card 2 -->
+                <div class="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden hover:border-primary transition group">
+                    <div class="relative w-full aspect-[9/16] bg-slate-800 flex items-center justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=400&q=80" alt="Video Thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-darker/50"></div>
+                        
+                        <div class="absolute z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/40 transition">
+                            <i data-lucide="play" class="text-white ml-1"></i>
+                        </div>
+                        
+                        <div class="absolute bottom-16 w-full px-6 text-center z-10">
+                            <p class="text-white font-extrabold text-xl uppercase tracking-wide subtitle-text">
+                                JANGAN <span class="text-primary">LAKUKAN</span> INI<br>
+                                SAAT INTERVIEW! 🚫
+                            </p>
+                        </div>
+
+                        <div class="absolute top-4 left-4 right-4 flex justify-between z-10">
+                            <span class="bg-green-500/20 text-green-400 border border-green-500/50 text-xs font-bold px-2 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i> Viral Score: 92
+                            </span>
+                            <span class="bg-black/50 text-white text-xs font-medium px-2 py-1 rounded-md backdrop-blur-md">
+                                00:18
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg mb-1 truncate">Kesalahan Fatal Interview</h3>
+                        <p class="text-xs text-slate-400 mb-4 line-clamp-2">Tips edukasi karir. Kata kunci "Jangan lakukan ini" memiliki retention rate tinggi.</p>
+                        
+                        <div class="flex gap-2">
+                            <button class="flex-1 bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-slate-200 transition flex items-center justify-center gap-2 text-sm">
+                                <i data-lucide="download" class="w-4 h-4"></i> Unduh
+                            </button>
+                            <button class="p-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition" title="Edit Subtitle">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clip Card 3 -->
+                <div class="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden hover:border-primary transition group">
+                    <div class="relative w-full aspect-[9/16] bg-slate-800 flex items-center justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=400&q=80" alt="Video Thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-darker/50"></div>
+                        
+                        <div class="absolute z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/40 transition">
+                            <i data-lucide="play" class="text-white ml-1"></i>
+                        </div>
+                        
+                        <div class="absolute bottom-16 w-full px-6 text-center z-10">
+                            <p class="text-white font-extrabold text-xl uppercase tracking-wide subtitle-text">
+                                CARA KERJA <span class="bg-primary px-1">AI</span><br>
+                                DI TAHUN 2026 🤯
+                            </p>
+                        </div>
+
+                        <div class="absolute top-4 left-4 right-4 flex justify-between z-10">
+                            <span class="bg-yellow-500/20 text-yellow-400 border border-yellow-500/50 text-xs font-bold px-2 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i> Viral Score: 85
+                            </span>
+                            <span class="bg-black/50 text-white text-xs font-medium px-2 py-1 rounded-md backdrop-blur-md">
+                                00:29
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg mb-1 truncate">Masa Depan Teknologi AI</h3>
+                        <p class="text-xs text-slate-400 mb-4 line-clamp-2">Penjelasan teknologi yang dipadatkan dengan gaya penceritaan cepat.</p>
+                        
+                        <div class="flex gap-2">
+                            <button class="flex-1 bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-slate-200 transition flex items-center justify-center gap-2 text-sm">
+                                <i data-lucide="download" class="w-4 h-4"></i> Unduh
+                            </button>
+                            <button class="p-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition" title="Edit Subtitle">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 text-slate-500 text-sm py-8 text-center mt-auto">
+        <p>&copy; 2026 ClippingIn. Hak Cipta Dilindungi AI.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Inisialisasi Lucide Icons
+        lucide.createIcons();
+
+        // Elemen DOM
+        const inputStage = document.getElementById('input-stage');
+        const processingStage = document.getElementById('processing-stage');
+        const resultsStage = document.getElementById('results-stage');
+        const processBtn = document.getElementById('process-btn');
+        const videoInput = document.getElementById('video-url');
+        
+        // Progress elements
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const aiStatusTitle = document.getElementById('ai-status-title');
+        const aiStatusDesc = document.getElementById('ai-status-desc');
+        
+        // Steps elements
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+
+        // Simulasi Proses AI
+        processBtn.addEventListener('click', () => {
+            const url = videoInput.value.trim();
+            if (!url) {
+                // Flash input red if empty
+                videoInput.parentElement.classList.add('ring-2', 'ring-red-500');
+                setTimeout(() => videoInput.parentElement.classList.remove('ring-2', 'ring-red-500'), 1000);
+                return;
+            }
+
+            // Transisi ke stage Processing
+            inputStage.classList.add('hidden');
+            processingStage.classList.remove('hidden');
+
+            // Logika Animasi Loading Simulasi AI
+            let progress = 0;
+            const totalDuration = 8000; // 8 detik simulasi
+            const intervalTime = 50;
+            const stepIncrement = 100 / (totalDuration / intervalTime);
+
+            const loadingInterval = setInterval(() => {
+                progress += stepIncrement;
+                if (progress >= 100) progress = 100;
+
+                // Update UI Bar
+                progressBar.style.width = `${progress}%`;
+                progressText.innerText = `${Math.floor(progress)}%`;
+
+                // Update Status Text & Active Steps based on progress
+                if (progress > 5 && progress < 30) {
+                    aiStatusTitle.innerText = "Mentranskripsi Audio (Speech-to-Text)...";
+                    aiStatusDesc.innerText = "Mengubah suara menjadi teks dengan model AI Whisper.";
+                    step1.classList.remove('opacity-50');
+                    step1.classList.add('border-primary', 'bg-slate-800');
+                } 
+                else if (progress >= 30 && progress < 65) {
+                    aiStatusTitle.innerText = "Menganalisis Momen Viral...";
+                    aiStatusDesc.innerText = "Mendeteksi emosi, tawa, dan kata kunci berkinerja tinggi.";
+                    step2.classList.remove('opacity-50');
+                    step2.classList.add('border-secondary', 'bg-slate-800');
+                }
+                else if (progress >= 65 && progress < 99) {
+                    aiStatusTitle.innerText = "Membuat Klip Vertikal...";
+                    aiStatusDesc.innerText = "Menerapkan face-tracking, memotong rasio 9:16, dan menambahkan subtitle pop-up.";
+                    step3.classList.remove('opacity-50');
+                    step3.classList.add('border-primary', 'bg-slate-800');
+                }
+                else if (progress === 100) {
+                    clearInterval(loadingInterval);
+                    setTimeout(() => {
+                        // Selesai -> Tampilkan Hasil
+                        processingStage.classList.add('hidden');
+                        resultsStage.classList.remove('hidden');
+                    }, 500);
+                }
+            }, intervalTime);
+        });
+
+        // Fungsi Reset (Kembali ke awal)
+        function resetApp() {
+            videoInput.value = '';
+            resultsStage.classList.add('hidden');
+            
+            // Reset Progress UI
+            progressBar.style.width = '0%';
+            progressText.innerText = '0%';
+            aiStatusTitle.innerText = 'Mengunduh Video...';
+            aiStatusDesc.innerText = 'Sistem sedang menyiapkan file untuk dianalisis.';
+            
+            [step1, step2, step3].forEach(step => {
+                step.classList.add('opacity-50');
+                step.classList.remove('border-primary', 'border-secondary', 'bg-slate-800');
+            });
+
+            inputStage.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

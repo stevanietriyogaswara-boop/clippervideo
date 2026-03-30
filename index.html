@@ -178,17 +178,17 @@
                 <div class="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden hover:border-primary transition group">
                     <!-- Video Mockup (9:16 Aspect Ratio) -->
                     <div class="relative w-full aspect-[9/16] bg-slate-800 flex items-center justify-center overflow-hidden">
-                        <!-- Mock Video Background (using gradient/image placeholder) -->
-                        <img src="https://images.unsplash.com/photo-1516280440503-6c9fa5c4a3ee?auto=format&fit=crop&w=400&q=80" alt="Video Thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-darker/50"></div>
+                        <!-- REAL VIDEO 1 -->
+                        <video id="vid-1" src="https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-woman-in-a-neon-lit-room-41696-large.mp4" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-700" loop playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-darker/50 pointer-events-none"></div>
                         
                         <!-- Play Button Overlay -->
-                        <div class="absolute z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/40 transition">
-                            <i data-lucide="play" class="text-white ml-1"></i>
+                        <div onclick="togglePlay('vid-1')" class="absolute z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/40 transition">
+                            <i data-lucide="play" id="icon-vid-1" class="text-white ml-1"></i>
                         </div>
                         
                         <!-- Mock Dynamic Subtitles -->
-                        <div class="absolute bottom-16 w-full px-6 text-center z-10">
+                        <div class="absolute bottom-16 w-full px-6 text-center z-10 pointer-events-none">
                             <p class="text-white font-extrabold text-xl uppercase tracking-wide subtitle-text">
                                 <span class="text-yellow-400">RAHASIA</span> SUKSES<br>
                                 DI USIA MUDA! 🔥
@@ -196,7 +196,7 @@
                         </div>
 
                         <!-- Top Badges -->
-                        <div class="absolute top-4 left-4 right-4 flex justify-between z-10">
+                        <div class="absolute top-4 left-4 right-4 flex justify-between z-10 pointer-events-none">
                             <span class="bg-green-500/20 text-green-400 border border-green-500/50 text-xs font-bold px-2 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i data-lucide="trending-up" class="w-3 h-3"></i> Viral Score: 99
                             </span>
@@ -212,7 +212,7 @@
                         <p class="text-xs text-slate-400 mb-4 line-clamp-2">AI mendeteksi energi tinggi dan topik self-improvement yang sangat populer di TikTok.</p>
                         
                         <div class="flex gap-2">
-                            <button class="flex-1 bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-slate-200 transition flex items-center justify-center gap-2 text-sm">
+                            <button onclick="simulateDownload('Rahasia_Sukses_Klip_1.mp4', 'https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-woman-in-a-neon-lit-room-41696-large.mp4')" class="flex-1 bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-slate-200 transition flex items-center justify-center gap-2 text-sm">
                                 <i data-lucide="download" class="w-4 h-4"></i> Unduh
                             </button>
                             <button class="p-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition" title="Edit Subtitle">
@@ -225,21 +225,22 @@
                 <!-- Clip Card 2 -->
                 <div class="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden hover:border-primary transition group">
                     <div class="relative w-full aspect-[9/16] bg-slate-800 flex items-center justify-center overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=400&q=80" alt="Video Thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-darker/50"></div>
+                        <!-- REAL VIDEO 2 -->
+                        <video id="vid-2" src="https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-308-large.mp4" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-700" loop playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-darker/50 pointer-events-none"></div>
                         
-                        <div class="absolute z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/40 transition">
-                            <i data-lucide="play" class="text-white ml-1"></i>
+                        <div onclick="togglePlay('vid-2')" class="absolute z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/40 transition">
+                            <i data-lucide="play" id="icon-vid-2" class="text-white ml-1"></i>
                         </div>
                         
-                        <div class="absolute bottom-16 w-full px-6 text-center z-10">
+                        <div class="absolute bottom-16 w-full px-6 text-center z-10 pointer-events-none">
                             <p class="text-white font-extrabold text-xl uppercase tracking-wide subtitle-text">
                                 JANGAN <span class="text-primary">LAKUKAN</span> INI<br>
                                 SAAT INTERVIEW! 🚫
                             </p>
                         </div>
 
-                        <div class="absolute top-4 left-4 right-4 flex justify-between z-10">
+                        <div class="absolute top-4 left-4 right-4 flex justify-between z-10 pointer-events-none">
                             <span class="bg-green-500/20 text-green-400 border border-green-500/50 text-xs font-bold px-2 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i data-lucide="trending-up" class="w-3 h-3"></i> Viral Score: 92
                             </span>
@@ -254,7 +255,7 @@
                         <p class="text-xs text-slate-400 mb-4 line-clamp-2">Tips edukasi karir. Kata kunci "Jangan lakukan ini" memiliki retention rate tinggi.</p>
                         
                         <div class="flex gap-2">
-                            <button class="flex-1 bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-slate-200 transition flex items-center justify-center gap-2 text-sm">
+                            <button onclick="simulateDownload('Kesalahan_Interview_Klip_2.mp4', 'https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-308-large.mp4')" class="flex-1 bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-slate-200 transition flex items-center justify-center gap-2 text-sm">
                                 <i data-lucide="download" class="w-4 h-4"></i> Unduh
                             </button>
                             <button class="p-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition" title="Edit Subtitle">
@@ -267,21 +268,22 @@
                 <!-- Clip Card 3 -->
                 <div class="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden hover:border-primary transition group">
                     <div class="relative w-full aspect-[9/16] bg-slate-800 flex items-center justify-center overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=400&q=80" alt="Video Thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-darker/50"></div>
+                        <!-- REAL VIDEO 3 -->
+                        <video id="vid-3" src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-city-315-large.mp4" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-700" loop playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-darker/50 pointer-events-none"></div>
                         
-                        <div class="absolute z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/40 transition">
-                            <i data-lucide="play" class="text-white ml-1"></i>
+                        <div onclick="togglePlay('vid-3')" class="absolute z-10 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/40 transition">
+                            <i data-lucide="play" id="icon-vid-3" class="text-white ml-1"></i>
                         </div>
                         
-                        <div class="absolute bottom-16 w-full px-6 text-center z-10">
+                        <div class="absolute bottom-16 w-full px-6 text-center z-10 pointer-events-none">
                             <p class="text-white font-extrabold text-xl uppercase tracking-wide subtitle-text">
                                 CARA KERJA <span class="bg-primary px-1">AI</span><br>
                                 DI TAHUN 2026 🤯
                             </p>
                         </div>
 
-                        <div class="absolute top-4 left-4 right-4 flex justify-between z-10">
+                        <div class="absolute top-4 left-4 right-4 flex justify-between z-10 pointer-events-none">
                             <span class="bg-yellow-500/20 text-yellow-400 border border-yellow-500/50 text-xs font-bold px-2 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i data-lucide="trending-up" class="w-3 h-3"></i> Viral Score: 85
                             </span>
@@ -296,7 +298,7 @@
                         <p class="text-xs text-slate-400 mb-4 line-clamp-2">Penjelasan teknologi yang dipadatkan dengan gaya penceritaan cepat.</p>
                         
                         <div class="flex gap-2">
-                            <button class="flex-1 bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-slate-200 transition flex items-center justify-center gap-2 text-sm">
+                            <button onclick="simulateDownload('Masa_Depan_AI_Klip_3.mp4', 'https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-city-315-large.mp4')" class="flex-1 bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-slate-200 transition flex items-center justify-center gap-2 text-sm">
                                 <i data-lucide="download" class="w-4 h-4"></i> Unduh
                             </button>
                             <button class="p-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition" title="Edit Subtitle">
@@ -310,6 +312,9 @@
         </section>
 
     </main>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3"></div>
 
     <!-- Footer -->
     <footer class="border-t border-slate-800 text-slate-500 text-sm py-8 text-center mt-auto">
@@ -414,6 +419,76 @@
             });
 
             inputStage.classList.remove('hidden');
+        }
+
+        // --- Fitur Video Player & Download ---
+        
+        // Fungsi Play/Pause Video
+        function togglePlay(videoId) {
+            const video = document.getElementById(videoId);
+            const icon = document.getElementById('icon-' + videoId);
+            
+            // Pause all other videos first
+            document.querySelectorAll('video').forEach(vid => {
+                if(vid.id !== videoId && !vid.paused) {
+                    vid.pause();
+                    document.getElementById('icon-' + vid.id).setAttribute('data-lucide', 'play');
+                }
+            });
+
+            if (video.paused) {
+                video.play();
+                icon.setAttribute('data-lucide', 'pause');
+            } else {
+                video.pause();
+                icon.setAttribute('data-lucide', 'play');
+            }
+            lucide.createIcons(); // Re-render icon
+        }
+
+        // Fungsi Simulasi Download
+        function simulateDownload(filename, fileUrl) {
+            showToast(`Mulai mengunduh: ${filename}`, 'primary');
+            
+            // Simulate processing time
+            setTimeout(() => {
+                // Membuka tautan video asli untuk diunduh (untuk keperluan demo)
+                const a = document.createElement('a');
+                a.href = fileUrl;
+                a.download = filename;
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                showToast('Unduhan selesai!', 'green');
+            }, 1500);
+        }
+
+        // UI Toast Notification
+        function showToast(message, color) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgColorClass = 'bg-primary';
+            if(color === 'green') bgColorClass = 'bg-green-600';
+            
+            toast.className = `${bgColorClass} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 transform transition-all duration-300 translate-y-10 opacity-0`;
+            toast.innerHTML = `<i data-lucide="info" class="w-5 h-5"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+            
+            // Animate In
+            setTimeout(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            }, 50);
+            
+            // Animate Out & Remove
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
     </script>
 </body>
